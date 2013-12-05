@@ -7,8 +7,10 @@ __author__ = 'Denis'
 
 def func():
     print("hi")
-    asd = Logger('Log')
-    asd.testMethod()
+    asd = Logger('Logs')
+    asd.logSkippedObject("hey")
+    asd.logSkippedObject("hey1")
+    asd.log("Started")
 
 if __name__ == "__main__":
     func()
