@@ -24,7 +24,7 @@ class Program(object):
         self.__logger.log("Starting")
 
         asd = ConfigReader("directories.cfg", "=>")
-        print(asd.getTuples()[0][0])
+        print(asd.getTuples()[1][1])
 
 
 if __name__ == "__main__":

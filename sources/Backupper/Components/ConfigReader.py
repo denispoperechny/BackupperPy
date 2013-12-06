@@ -16,7 +16,7 @@ class ConfigReader(object):
         for line in file:
             if '\n' == line[-1]:
                 line = line[:-1]
-            if (line.strip()[0] != '#'):
+            if (len(line.strip()) > 0 and line.strip()[0] != '#'):
                 splitted = line.split(self.__delimiter)
                 self.__data.append((splitted[0].strip(), splitted[1].strip()))
                 #(tuple1, tuple2) = line.split(self.__delimiter)
