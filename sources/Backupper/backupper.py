@@ -1,5 +1,6 @@
 #!/usr/local/bin/python
 import sys
+from Components.ConfigReader import ConfigReader
 from Components.Logger import Logger
 
 
@@ -21,6 +22,9 @@ class Program(object):
     def start(self):
         self.__logger = Logger('Logs')
         self.__logger.log("Starting")
+
+        asd = ConfigReader("directories.cfg", "=>")
+        print(asd.getTuples()[0][0])
 
 
 if __name__ == "__main__":

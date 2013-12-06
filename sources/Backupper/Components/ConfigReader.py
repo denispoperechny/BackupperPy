@@ -11,7 +11,16 @@ class ConfigReader(object):
         self.__delimiter = delimeter
 
     def __readData(self):
-        print("Not implemented")
+        file = open(self.__configFile, 'r')
+        self.__data = list()
+        for line in file:
+            if '\n' == line[-1]:
+                line = line[:-1]
+            if (line.strip()[0] != '#'):
+                splitted = line.split(self.__delimiter)
+                self.__data.append((splitted[0].strip(), splitted[1].strip()))
+                #(tuple1, tuple2) = line.split(self.__delimiter)
+
 
     def count(self):
         return self.getTuples().count()
