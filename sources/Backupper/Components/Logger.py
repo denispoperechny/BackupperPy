@@ -20,7 +20,7 @@ class Logger(object):
         print(line)
         self.__writeLineToFile("log.txt", line)
 
-    def logSkippedObject(self, path):
+    def logIgnoredObject(self, path):
         self.__writeLineToFile("skipped.txt", path)
 
     # Objects which presented at backup directory but not existed at source
