@@ -66,7 +66,6 @@ class Program(object):
             self.processDirectoryRecursively("/"+dir, sourceRoot, destinationRoot)
 
     # TODO: Refactor (code duplicating and path combining)
-    # Also check if file and directory has same names
     def __checkObsoleteFiles(self, destDir, sourceDir):
         destFiles = [f for f in listdir(destDir) if isfile(join(sourceDir, f))]
         destDirectories = [f for f in listdir(destDir) if not isfile(join(sourceDir, f))]
