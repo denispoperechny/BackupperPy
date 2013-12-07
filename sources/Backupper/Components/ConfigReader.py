@@ -23,7 +23,7 @@ class ConfigReader(object):
 
 
     def count(self):
-        return self.getTuples().count()
+        return len(self.getTuples())
 
     def getTuples(self):
         if self.__data is None:

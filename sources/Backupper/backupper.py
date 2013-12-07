@@ -5,6 +5,7 @@ from Components.Logger import Logger
 
 
 __author__ = 'Denis'
+__directoriesConfig__ = "directories.cfg"
 
 def unhandledExceptionUtilizer(type, value, traceback):
         logger = Logger('Logs')
@@ -22,9 +23,17 @@ class Program(object):
     def start(self):
         self.__logger = Logger('Logs')
         self.__logger.log("Starting")
+        self.__logger.log("Reading directories config: " + __directoriesConfig__)
+        configReader = ConfigReader(__directoriesConfig__, "=>")
+        directories = configReader.getTuples()
+        self.__logger.log("Directories to be backed up: " + str(len(directories)))
+        self.__logger.log("Starting backup process")
+        for i in range(0, len(directories)):
+            self.processDirectoryRecursively("/", directories[i][0], directories[i][1])
 
-        asd = ConfigReader("directories.cfg", "=>")
-        print(asd.getTuples()[1][1])
+    def processDirectoryRecursively(self, currentDirectory, sourceRoot, destinationRoot):
+        print(sourceRoot + "==>" + destinationRoot)
+
 
 
 if __name__ == "__main__":
