@@ -49,6 +49,8 @@ class Program(object):
         if not os.path.exists(destDir):
             os.makedirs(destDir)
 
+        self.__checkObsoleteFiles(destDir, sourceDir)
+
         onlyfiles = [f for f in listdir(sourceDir) if isfile(join(sourceDir, f))]
         directories = [f for f in listdir(sourceDir) if not isfile(join(sourceDir, f))]
 
@@ -62,6 +64,22 @@ class Program(object):
 
         for dir in directories:
             self.processDirectoryRecursively("/"+dir, sourceRoot, destinationRoot)
+
+    # TODO: Refactor (code duplicating and path combining)
+    # Also check if file and directory has same names
+    def __checkObsoleteFiles(self, destDir, sourceDir):
+        destFiles = [f for f in listdir(destDir) if isfile(join(sourceDir, f))]
+        destDirectories = [f for f in listdir(destDir) if not isfile(join(sourceDir, f))]
+        sourceFiles = [f for f in listdir(sourceDir) if isfile(join(sourceDir, f))]
+        sourceDirectories = [f for f in listdir(sourceDir) if not isfile(join(sourceDir, f))]
+
+        for dFile in destFiles:
+            if not dFile in sourceFiles:
+                self.__logger.logObsoleteObject(destDir+"/"+dFile)
+        for dDir in destDirectories:
+            if not dDir in sourceDirectories:
+                self.__logger.logObsoleteObject(destDir+"/"+dDir)
+
 
 if __name__ == "__main__":
     Program().start()
