@@ -7,12 +7,14 @@ from Components.Logger import Logger
 from os import listdir
 from os.path import isfile, join
 
-
 __author__ = 'Denis'
-__directoriesConfig__ = "directories.cfg"
+__configs__ = None
+#__directoriesConfig__ = "backupper.directories.cfg"
+__mainConfigFile__ = "backupper.cfg"
+
 
 def unhandledExceptionUtilizer(type, value, traceback):
-        logger = Logger('Logs')
+        logger = Logger(__configs__.getValuesByKey("logs")[0])
         logger.log("Unhandled Exception")
         logger.log("Type:" + str(type))
         logger.log("Value:" + str(value))
@@ -20,15 +22,16 @@ def unhandledExceptionUtilizer(type, value, traceback):
         print("Traceback:" + traceback)
 sys.excepthook = unhandledExceptionUtilizer
 
+
 class Program(object):
 
     __logger = None
 
     def start(self):
-        self.__logger = Logger('Logs')
+        self.__logger = Logger(__configs__.getValuesByKey("logs")[0])
         self.__logger.log("Starting")
-        self.__logger.log("Reading directories config: " + __directoriesConfig__)
-        configReader = ConfigReader(__directoriesConfig__, "=>")
+        self.__logger.log("Reading directories config: " + __configs__.getValuesByKey("directories_config")[0])
+        configReader = ConfigReader(__configs__.getValuesByKey("directories_config")[0], "=>")
         directories = configReader.getTuples()
         self.__logger.log("Directories to be backed up: " + str(len(directories)))
         self.__logger.log("Starting backup process")
@@ -81,4 +84,5 @@ class Program(object):
 
 
 if __name__ == "__main__":
+    __configs__ = ConfigReader(__mainConfigFile__, ":")
     Program().start()

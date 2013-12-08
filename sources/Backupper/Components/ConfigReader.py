@@ -1,5 +1,6 @@
 __author__ = 'Denis'
 
+
 class ConfigReader(object):
 
     __configFile = ""
@@ -21,7 +22,6 @@ class ConfigReader(object):
                 self.__data.append((splitted[0].strip(), splitted[1].strip()))
                 #(tuple1, tuple2) = line.split(self.__delimiter)
 
-
     def count(self):
         return len(self.getTuples())
 
@@ -30,3 +30,14 @@ class ConfigReader(object):
             self.__readData()
 
         return self.__data
+
+    def getValuesByKey(self, key):
+        # TODO: Try refactor with data selecting from collection
+        result = list()
+        keyTrimmed = key.strip()
+
+        for kv in self.getTuples():
+            if kv[0] == keyTrimmed:
+                result.append(kv[1])
+
+        return result
