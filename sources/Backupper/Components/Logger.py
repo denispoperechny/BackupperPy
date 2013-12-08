@@ -10,7 +10,7 @@ class Logger(object):
 
     def __init__(self, logRoot):
         timeStamp = time.strftime("%d.%m.%Y_%H.%M.%S")
-        self.__destDirectory = logRoot + "/" + timeStamp
+        self.__destDirectory = os.path.join(logRoot, timeStamp)
         if not os.path.exists(self.__destDirectory):
             os.makedirs(self.__destDirectory)
 
@@ -28,6 +28,6 @@ class Logger(object):
         self.__writeLineToFile("obsolete.txt", path)
 
     def __writeLineToFile(self, file, line):
-        logFilePath = self.__destDirectory+'/'+file
+        logFilePath = os.path.join(self.__destDirectory, file)
         with open(logFilePath, 'a') as f:
             f.write(line + "\n")
