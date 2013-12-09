@@ -15,6 +15,7 @@ class ConfigReader(object):
         file = open(self.__configFile, 'r')
         self.__data = list()
         for line in file:
+            # TODO: How does this work (line[-1])?
             if '\n' == line[-1]:
                 line = line[:-1]
             if (len(line.strip()) > 0 and line.strip()[0] != '#'):

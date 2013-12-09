@@ -9,7 +9,6 @@ from os.path import isfile
 
 __author__ = 'Denis'
 __configs__ = None
-#__directoriesConfig__ = "backupper.directories.cfg"
 __mainConfigFile__ = "backupper.cfg"
 
 
@@ -67,7 +66,7 @@ class Program(object):
         for nextDir in directories:
             self.processDirectoryRecursively(os.path.join(currentDirectory, nextDir), sourceRoot, destinationRoot)
 
-    # TODO: Refactor (code duplicating and path combining)
+    # TODO: Refactor (code duplicating)
     def __checkObsoleteFiles(self, destDir, sourceDir):
         destFiles = [f for f in listdir(destDir) if isfile(os.path.join(sourceDir, f))]
         destDirectories = [f for f in listdir(destDir) if not isfile(os.path.join(sourceDir, f))]
