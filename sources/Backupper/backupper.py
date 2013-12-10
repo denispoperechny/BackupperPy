@@ -9,6 +9,7 @@ from os.path import isfile
 import time
 
 __author__ = 'Denis'
+__appTimeStamp__ = time.strftime("%d.%m.%Y_%H.%M.%S")
 __configs__ = None
 __mainConfigFile__ = "backupper.cfg"
 __timeLabel__ = ".last-backed-up"
@@ -16,7 +17,7 @@ __ignoreLabel__ = ".backup-ignore"
 
 
 def unhandledExceptionUtilizer(type, value, traceback):
-        logger = Logger(__configs__.getValuesByKey("logs")[0])
+        logger = Logger(__configs__.getValuesByKey("logs")[0], __appTimeStamp__)
         logger.log("Unhandled Exception")
         logger.log("Type:" + str(type))
         logger.log("Value:" + str(value))
@@ -30,7 +31,7 @@ class Program(object):
     __logger = None
 
     def start(self):
-        self.__logger = Logger(__configs__.getValuesByKey("logs")[0])
+        self.__logger = Logger(__configs__.getValuesByKey("logs")[0], __appTimeStamp__)
         self.__logger.log("Starting")
         self.__logger.log("Reading directories config: " + __configs__.getValuesByKey("directories_config")[0])
         configReader = ConfigReader(__configs__.getValuesByKey("directories_config")[0], "=>")

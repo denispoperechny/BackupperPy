@@ -9,7 +9,9 @@ class Logger(object):
     __destDirectory = ""
 
     def __init__(self, logRoot):
-        timeStamp = time.strftime("%d.%m.%Y_%H.%M.%S")
+        self.__init__(logRoot, time.strftime("%d.%m.%Y_%H.%M.%S"))
+
+    def __init__(self, logRoot, timeStamp):
         self.__destDirectory = os.path.join(logRoot, timeStamp)
         if not os.path.exists(self.__destDirectory):
             os.makedirs(self.__destDirectory)
