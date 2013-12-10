@@ -6,10 +6,13 @@ from Components.ConfigReader import ConfigReader
 from Components.Logger import Logger
 from os import listdir
 from os.path import isfile
+import time
 
 __author__ = 'Denis'
 __configs__ = None
 __mainConfigFile__ = "backupper.cfg"
+__timeLabel__ = ".last-backed-up"
+__ignoreLabel__ = ".backup-ignore"
 
 
 def unhandledExceptionUtilizer(type, value, traceback):
@@ -35,18 +38,28 @@ class Program(object):
         self.__logger.log("Directories to be backed up: " + str(len(directories)))
         self.__logger.log("Starting backup process")
         for i in range(0, len(directories)):
-            self.processDirectoryRecursively("", directories[i][0], directories[i][1])
+            self.__processDirectoryRecursively("", directories[i][0], directories[i][1])
             self.__logger.log("Directory backed up: " + directories[i][0])
+            self.__updateLabel(directories[i][1])
         self.__logger.log("Backup finished")
 
-    def processDirectoryRecursively(self, currentDirectory, sourceRoot, destinationRoot):
+    def __updateLabel(self, directory):
+        labelPath = os.path.join(directory, __timeLabel__)
+        if os.path.isfile(labelPath):
+            os.remove(labelPath)
+        with open(labelPath, 'a') as f:
+            f.write(time.strftime("%d.%m.%Y %H:%M:%S"))
+
+    def __processDirectoryRecursively(self, currentDirectory, sourceRoot, destinationRoot):
         sourceDir = os.path.join(sourceRoot, currentDirectory)
         destDir = os.path.join(destinationRoot, currentDirectory)
 
-        if os.path.isfile(os.path.join(sourceDir, ".backup-ignore")):
+        # Skip directory if ignored
+        if os.path.isfile(os.path.join(sourceDir, __ignoreLabel__)):
             self.__logger.logIgnoredObject(sourceDir)
             return
 
+        # Create destination directory if needed
         if not os.path.exists(destDir):
             os.makedirs(destDir)
 
@@ -64,21 +77,14 @@ class Program(object):
             copyfile(sFile, dFile)
 
         for nextDir in directories:
-            self.processDirectoryRecursively(os.path.join(currentDirectory, nextDir), sourceRoot, destinationRoot)
+            self.__processDirectoryRecursively(os.path.join(currentDirectory, nextDir), sourceRoot, destinationRoot)
 
-    # TODO: Refactor (code duplicating)
     def __checkObsoleteFiles(self, destDir, sourceDir):
-        destFiles = [f for f in listdir(destDir) if isfile(os.path.join(sourceDir, f))]
-        destDirectories = [f for f in listdir(destDir) if not isfile(os.path.join(sourceDir, f))]
-        sourceFiles = [f for f in listdir(sourceDir) if isfile(os.path.join(sourceDir, f))]
-        sourceDirectories = [f for f in listdir(sourceDir) if not isfile(os.path.join(sourceDir, f))]
-
-        for dFile in destFiles:
-            if not dFile in sourceFiles:
-                self.__logger.logObsoleteObject(os.path.join(destDir, dFile))
-        for dDir in destDirectories:
-            if not dDir in sourceDirectories:
-                self.__logger.logObsoleteObject(os.path.join(destDir, dDir))
+        destObjects = [f for f in listdir(destDir) if not f == __timeLabel__]
+        sourceObjects = [f for f in listdir(sourceDir)]
+        for dObj in destObjects:
+            if not dObj in sourceObjects:
+                self.__logger.logObsoleteObject(os.path.join(destDir, dObj))
 
 
 if __name__ == "__main__":

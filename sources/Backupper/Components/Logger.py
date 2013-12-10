@@ -29,6 +29,5 @@ class Logger(object):
 
     def __writeLineToFile(self, file, line):
         logFilePath = os.path.join(self.__destDirectory, file)
-        #TODO: Try print(file=...)
         with open(logFilePath, 'a') as f:
             f.write(line + "\n")
