@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+##!/usr/local/bin/python
 import os
 from shutil import copyfile
 import sys
@@ -14,6 +14,7 @@ __configs__ = None
 __mainConfigFile__ = "backupper.cfg"
 __timeLabel__ = ".last-backed-up"
 __ignoreLabel__ = ".backup-ignore"
+__scriptDir__ = os.path.dirname(os.path.realpath(__file__))
 
 
 def unhandledExceptionUtilizer(type, value, traceback):
@@ -89,5 +90,5 @@ class Program(object):
 
 
 if __name__ == "__main__":
-    __configs__ = ConfigReader(__mainConfigFile__, ":")
+    __configs__ = ConfigReader(os.path.join(__scriptDir__, __mainConfigFile__), ":")
     Program().start()
