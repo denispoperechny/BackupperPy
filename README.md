@@ -1,6 +1,6 @@
-BackupperPy (Software for making backups.)
+BackupperPy (Software for making backups)
 ===========
-Phase 1 finished
+Phase 1 finished - Released
 ===========
 
 Script copies recursively source directories to destination ones.
